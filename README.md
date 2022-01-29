@@ -16,10 +16,16 @@ The function_blocks subdirectory houses various files used in conjunction with e
 - Saturate.scl [FC] - Passes input signal only if signal value is between upper and lower thresholds, else saturates the signal at corresponding threshold value.
   
 ## Technologies 
-This SCL code is to be used within a Siemens TIA Portal Project
+This SCL code is to be used within a Siemens TIA Portal Project.
 
 ## Usage
-PI Controller block can be used in main, however this does not guarantee a fixed sample rate.
+The PI Controller block can be used in main, however this does not guarantee a fixed sample rate.
+</br>
+Using the PI block in a Cyclic Interrupt Program Block overcomes this issue.
 
-(./imgs/CyclicInterrupt.png)
 
+![Embedding blocks within a Cyclic Interrupt](/imgs/CyclicInterrupt.PNG?raw=true)
+
+Here is the Main Cycle for my TIA Portal Project:
+
+![Main Cycle](/imgs/Main.PNG?raw=true)

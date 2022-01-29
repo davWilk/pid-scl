@@ -19,4 +19,7 @@ The function_blocks subdirectory houses various files used in conjunction with e
 This SCL code is to be used within a Siemens TIA Portal Project
 
 ## Usage
+PI Controller block can be used in main, however this does not guarantee a fixed sample rate.
+
+(./imgs/CyclicInterrupt.png)
 

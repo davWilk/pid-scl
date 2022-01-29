@@ -1,0 +1,35 @@
+﻿FUNCTION "Saturate" : Void
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_INPUT 
+      ir_Input : Real;
+      ir_UpperThreshold : Real;
+      ir_LowerThreshold : Real;
+   END_VAR
+
+   VAR_OUTPUT 
+      or_Output : Real;
+   END_VAR
+
+
+BEGIN
+	REGION UpperSaturate
+	    //IF input signal is ABOVE upper threshold, saturate it
+	    IF #ir_Input > #ir_UpperThreshold THEN
+	        #or_Output := #ir_UpperThreshold;
+	    ELSE
+	        #or_Output := #ir_Input;
+	    END_IF;
+	END_REGION ;
+	
+	// Only one ELSE is needed, as if U is below upper thresh AND below lower thresh
+	//  then u is saturated (ie Y is overwritten)
+	REGION LowerSaturate
+	    //IF input signal is below lower threshold, saturate it
+	    IF #ir_Input < #ir_LowerThreshold THEN
+	        #or_Output := #ir_LowerThreshold;
+	    END_IF;
+	END_REGION ;
+	
+END_FUNCTION
+

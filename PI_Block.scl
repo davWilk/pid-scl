@@ -1,0 +1,45 @@
+﻿FUNCTION_BLOCK "PI_Block"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_INPUT 
+      ir_Setpoint : Real;
+      ir_Input : Real;
+      ir_ProportionalGain : Real := 1.0;
+      ir_IntegralGain : Real;
+      ib_ResetFlag : Bool;
+   END_VAR
+
+   VAR_OUTPUT 
+      or_Output : Real;
+   END_VAR
+
+   VAR 
+      sr_PreviousSetpoint : Real;
+      sr_ErrorSum : Real;
+   END_VAR
+
+   VAR_TEMP 
+      _error : Real;
+   END_VAR
+
+
+BEGIN
+	REGION RESET_ERROR
+	    // Reset ErrorSum IF ResetFlag is TRUE
+	    //  OR if Setpoint changed
+	    IF #ib_ResetFlag = 1 OR #ir_Setpoint <> #sr_PreviousSetpoint THEN
+	        #sr_ErrorSum := 0; // Static variable
+	    END_IF;
+	END_REGION
+	
+	REGION CALCULATE_ERROR
+	    #_error := #ir_Setpoint - #ir_Input;
+	    #sr_ErrorSum := #sr_ErrorSum + #_error; //Updating error sum, used for integral error
+	END_REGION
+	
+	REGION CALCULATE_OUTPUT
+	    #or_Output := (#ir_ProportionalGain * #_error) + (#ir_IntegralGain * #sr_ErrorSum);
+	    #sr_PreviousSetpoint := #ir_Setpoint;
+	END_REGION
+END_FUNCTION_BLOCK
+

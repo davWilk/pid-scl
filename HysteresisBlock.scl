@@ -1,0 +1,40 @@
+﻿FUNCTION_BLOCK "HysteresisBlock"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_INPUT 
+      ir_Input : Real;
+      ir_UpperPct : Real;
+      ir_LowerPct : Real;
+   END_VAR
+
+   VAR_OUTPUT 
+      or_Output : Real;
+   END_VAR
+
+   VAR 
+      sr_PrevInput : Real;
+   END_VAR
+
+
+BEGIN
+	// Static variable needed to store previous program cycle input
+	// ir_UpperPct is upper multiplier for Hysteresis
+	// ir_LowerPct is lower multiplier
+	REGION UpperPercentage
+	    IF #ir_Input > (#ir_UpperPct * #sr_PrevInput) THEN
+	        #or_Output := #ir_Input;
+	        #sr_PrevInput := #ir_Input;
+	    ELSE
+	        #or_Output := #sr_PrevInput;
+	    END_IF;
+	END_REGION
+	
+	REGION LowerPercentage
+	    IF #ir_Input < (#ir_LowerPct * #sr_PrevInput) THEN
+	        #or_Output := #ir_Input;
+	        #sr_PrevInput := #ir_Input;
+	    END_IF;
+	END_REGION;
+	        
+END_FUNCTION_BLOCK
+

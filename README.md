@@ -1,4 +1,4 @@
-# PID_SCL
+# pid-scl
 
 ## Table of Contents
 * [General Info](#general-info)
